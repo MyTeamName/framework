@@ -5,6 +5,15 @@ namespace Illuminate\Foundation\Http\Middleware;
 class ConvertEmptyStringsToNull extends TransformsRequest
 {
     /**
+     * The attributes that should not be converted to null.
+     *
+     * @var array
+     */
+    protected $except = [
+        //
+    ];
+
+    /**
      * Transform the given value.
      *
      * @param  string  $key
@@ -13,6 +22,10 @@ class ConvertEmptyStringsToNull extends TransformsRequest
      */
     protected function transform($key, $value)
     {
+        if (in_array($key, $this->except, true)) {
+            return $value;
+        }
+
         return is_string($value) && $value === '' ? null : $value;
     }
 }
